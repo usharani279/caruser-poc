@@ -1,0 +1,16 @@
+%dw 2.0
+
+type auto_21197d92_2a98_4e43_b64f_41ef6db79245_Output_Variables_user = {|  |} | {|
+  userid: Number, 
+  firstname?: String, 
+  lastname?: String, 
+  about?: String, 
+  areasofinterest?: String, 
+  usertype?: String, 
+  experience?: Number, 
+  domain?: String, 
+  role?: String, 
+  profilepicture?: String, 
+  mobilenumber?: String
+|}
+

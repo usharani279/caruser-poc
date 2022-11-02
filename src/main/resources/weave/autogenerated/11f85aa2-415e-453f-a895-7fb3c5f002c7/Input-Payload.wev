@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_11f85aa2_415e_453f_a895_7fb3c5f002c7_Input_Payload = Array<{|  courseid: Number,   course: String,   price: Number,   ratings: String,   reviews: String|} | {|  courseid: Number,   course: String,   price: Number,   ratings: String,   reviews: String|}>
+

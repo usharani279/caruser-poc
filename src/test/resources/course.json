@@ -1,0 +1,57 @@
+[
+    {
+        "sold": "50",
+        "coursename": "tibco",
+        "price": "4000",
+        "review": "exellent",
+        "ratings": "5",
+        "averageratings": "5",
+        "completed": "40",
+        "courseid": 1,
+        "username": "harika"
+    },
+    {
+        "sold": "50",
+        "coursename": "mulesoft",
+        "price": "5000",
+        "review": "good",
+        "ratings": "5star",
+        "averageratings": "5",
+        "completed": "30",
+        "courseid": 2,
+        "username": "john"
+    },
+    {
+        "sold": "40",
+        "coursename": "kafka",
+        "price": "7000",
+        "review": "good",
+        "ratings": "5star",
+        "averageratings": "5",
+        "completed": "50",
+        "courseid": 3,
+        "username": "nikitha"
+    },
+    {
+        "sold": "60",
+        "coursename": "java",
+        "price": "3000",
+        "review": "good",
+        "ratings": "4star",
+        "averageratings": "5",
+        "completed": "35",
+        "courseid": 4,
+        "username": "kavya"
+    },
+    {
+        "sold": "30",
+        "coursename": "SQL",
+        "price": "3000",
+        "review": "good",
+        "ratings": "5star",
+        "averageratings": "4",
+        "completed": "completed",
+        "courseid": 6,
+        "username": "koti"
+    }
+]

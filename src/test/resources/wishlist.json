@@ -1,0 +1,13 @@
+[
+    {
+      "courseid": 1,
+      "coursename": "mulesoft",
+      "price": "2000",
+      "userid": "1"
+    },
+    {
+      "courseid": 2,
+      "coursename": "UI",
+      "price": "3000",
+      "userid": "2"
+    }]

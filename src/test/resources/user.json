@@ -1,0 +1,41 @@
+[
+  {
+    "firstname": "john",
+    "role": "developer",
+    "mobilenumber": "9082180510",
+    "areasofinterest": null,
+    "domain": "saleforce",
+    "about": "somethikng",
+    "usertype": "experiance",
+    "profilepicture": "Y",
+    "experience": 3,
+    "userid": 1,
+    "lastname": "Maaco"
+  },
+  {
+    "firstname": "uha",
+    "role": "developer",
+    "mobilenumber": "890738904",
+    "areasofinterest": "Learning",
+    "domain": "sql",
+    "about": "hkosw",
+    "usertype": "expriance",
+    "profilepicture": "Y",
+    "experience": 3,
+    "userid": 2,
+    "lastname": "pala"
+  },
+  {
+    "firstname": "alexa",
+    "role": "tester",
+    "mobilenumber": "777777777",
+    "areasofinterest": "reading",
+    "domain": "selenium",
+    "about": "automation tester",
+    "usertype": "expriance",
+    "profilepicture": "Y",
+    "experience": 5,
+    "userid": 3,
+    "lastname": "jokk"
+  }
+]

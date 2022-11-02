@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_e908e937_628b_4dfd_9878_9f1498eb08e8_Output_Variables_courseid = Any
+

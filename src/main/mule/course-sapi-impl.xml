@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	
+	<flow name="fetchUserdetials" doc:id="906e597f-a8d4-4b8b-81e7-23ff2bddce3d" >
+		<db:select doc:id="85753b6d-2fa7-4e30-8640-deab914c0bbd" config-ref="Database_Config" doc:name="fetching User Data">
+			<db:sql ><![CDATA[select * from user;]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="userPayload" doc:id="62b4c214-ad2c-466d-bf00-5fff6be16aeb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="insertuserDetails" doc:id="80ff0d89-efd8-4a0e-acb0-6e5edb498d9e" >
+		<ee:transform doc:name="InputPayload" doc:id="fbe52fc6-4e6f-4c49-9e17-06327248a7be" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:insert doc:name="insertingNewUser record" doc:id="32023a14-56c9-4880-a93f-b7ed3033065e" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into user
+values(:userId,:firstname ,:lastname ,:about,:areasofinterest ,:usertype ,:experience,:domain,:role,:profilepicture,:mobilenumber)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[payload]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="finalPayload" doc:id="2b3f8631-e59b-473d-83d2-9797c4e7b162" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="updateUserDetails" doc:id="64530320-cc81-477c-af1b-60faceb06110" >
+		<ee:transform doc:name="inputData" doc:id="7048c842-eb0a-402f-b393-60b58ed6fadf" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="inputData" ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:update doc:name="UpdatingData" doc:id="a3513045-aee3-472a-9dfd-b172ba4ffa0b" config-ref="Database_Config">
+			<db:sql ><![CDATA[Update user set firstname= :firstname, lastname= :lastname, about= :about,
+ areasofinterest= :areasofinterest, usertype= :usertype, experience= :experience, domain= :domain
+ ,domain= :domain,role = :role, profilepicture= :profilepicture,
+  mobilenumber= :mobilenumber where userid = :userid ]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	firstname : vars.inputData.firstname,
+	mobilenumber :vars.inputData.mobilenumber,
+	lastname : vars.inputData.lastname,
+	about : vars.inputData.about,
+	areasofinterest : vars.inputData.areasofinterest,
+	domain :vars.inputData.domain,
+	usertype : vars.inputData.usertype,
+	experience : vars.inputData.experience,
+	role : vars.inputData.role,
+	profilepicture : vars.inputData.profilepicture,
+	userid : attributes.queryParams.userid
+}]]]></db:input-parameters>
+		</db:update>
+		<ee:transform doc:name="finalPayload" doc:id="2a625d3f-187a-4f48-a44b-1c062b8bd278" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="insertCoursedetails" doc:id="1905f708-5fd6-4554-b651-e1fffe5c8ef9" >
+		<ee:transform doc:name="inputData" doc:id="1541b677-834b-40cc-b3ff-0b5523be786d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:insert doc:name="Inserting NewCourse data" doc:id="3e943359-006f-440b-b659-abef0ae0824a" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into courses(courseid,coursename,price,review,ratings,username,sold,completed,averageratings)
+values(:courseid,:coursename,:price,:review,:ratings,:username,:sold,:completed,:averageratings)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[payload]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="finalPayload" doc:id="ab3ebe0b-9128-48dd-9f48-5dde9177f666" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="deleteCourse" doc:id="73ee68e8-41f3-496c-ba1a-393e25d4da55" >
+		<ee:transform doc:name="metaData" doc:id="c5293554-080f-4b88-982d-64c664e7630e" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="id" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.courseid]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:delete doc:name="Delete course" doc:id="d09c8710-19e0-412e-bd1a-151323e85ea7" config-ref="Database_Config">
+			<db:sql ><![CDATA[delete from courses where courseid = :courseid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+  "courseid" : vars.id
+}]]]></db:input-parameters>
+		</db:delete>
+		<ee:transform doc:name="finalPayload" doc:id="b6d15034-021f-43fc-ad9a-e67941cbd9a8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="fetchCourseDetails" doc:id="e1fe532c-efb5-476f-912b-e0ee821bc104" >
+		<db:select doc:name="fetching courses" doc:id="16b3d46b-317d-4a30-a7cc-fde7f81faa30" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from courses;]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="finalPayload" doc:id="47e0a58b-a2c6-4fd0-bec2-5cceea0c1bfe" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="fetchUsercartprice" doc:id="e908e937-628b-4dfd-9878-9f1498eb08e8" >
+		<ee:transform doc:name="metaData" doc:id="6201118a-ebaa-4a40-a0bc-f98a43d24c42" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="courseid" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.courseid]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:select doc:name="fetching usercart data" doc:id="d7796a9a-f89d-492a-a4af-b8d0c44e0479" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from usercart where courseid =:courseid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"courseid" : vars.courseid
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="finalPayaload" doc:id="d5fcef84-c93e-4aff-9ac8-5e01470df01f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"User cart content"  : payload,
+"Total price of user cart" : sum(payload.price) 	
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	
+</flow>
+	<flow name="usercartflow" doc:id="21197d92-2a98-4e43-b64f-41ef6db79245" >
+		<ee:transform doc:name="metaData" doc:id="bb757264-e321-43b4-8398-31a3ead3f832" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="userid" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.userid]]></ee:set-variable>
+				<ee:set-variable variableName="courseid" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.courseid]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:select doc:name="fetching course" doc:id="b93779a1-3d85-495b-b37e-16ab9f56eab4" targetValue="#[payload reduce ((item,acc = {}) -&gt; item)]" target="course" config-ref="Database_Config">
+			<db:sql ><![CDATA[Select * from courses where courseid = :courseid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+courseid : vars.courseid
+}]]]></db:input-parameters>
+		</db:select>
+<!-- 		<ee:transform doc:name="Transform Message" doc:id="8ea15cc1-ac3d-43df-97c4-01ec5b343987" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="courseData" ><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+payload]]></ee:set-variable>
+				<ee:set-variable variableName="course" ><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+payload reduce ((item,acc = {}) -> item)
+]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform> -->
+		<db:select doc:name="fetching user Data" doc:id="3c2367f5-a0ca-4de7-9e73-9f99d842a58c" target="user" targetValue="#[payload reduce ((item,acc = {}) -&gt; item)]" config-ref="Database_Config">
+			<db:sql ><![CDATA[Select * from user where userid= :userid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	userid : vars.userid
+}]]]></db:input-parameters>
+		</db:select>
+		<db:insert doc:name="Inserting usercart from courses and user" doc:id="c317bfc4-1d88-4b2b-bc71-8c1828829ce3" config-ref="Database_Config">
+			<db:sql><![CDATA[insert into usercart
+   values (:courseid,:userid,:coursename, :price, :ratings,:review)  ]]></db:sql>
+			<db:input-parameters><![CDATA[#[{
+	coursename : vars.course.coursename,
+	price : vars.course.price,
+	courseid : vars.course.courseid,
+	review : vars.course.review,
+	ratings : vars.course.ratings,
+	userid  : vars.user.userid
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="finalPayload" doc:id="c17c2c5b-a3ce-4ab6-88ae-e2c839e6d7d7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="deleteCoursefromUsercart" doc:id="7f9a26d5-9854-4600-ade5-e27013ecee8b" >
+		<ee:transform doc:name="metaData" doc:id="28c76d9f-2b9f-435f-b74a-a9c4ce5007ef" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="courseid" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.courseid]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:delete doc:name="Delete usercart from course" doc:id="b8119d87-c5b2-4963-b769-ecb2df33cf48" config-ref="Database_Config">
+			<db:sql ><![CDATA[delete from usercart where courseid = :courseid;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	courseid : vars.courseid
+}]]]></db:input-parameters>
+		</db:delete>
+		<logger level="INFO" doc:name="deleted course" doc:id="41dec166-0679-4665-a925-689ed499baf4" message='#["removed course from usercart"]'/>
+	</flow>
+	<flow name="addNCourses" doc:id="46490679-d97b-4d91-af81-8b9a535e6949" >
+		<db:select doc:name="fetching courses" doc:id="b17bf420-4295-4158-8eae-17883374bce7" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from courses;]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="courses payload" doc:id="aa87f9a8-4ed0-4a5f-abb3-2f112dd219c2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="43aeb5c3-9e5a-48a9-82aa-4390f4db22b9" >
+			<db:insert doc:name="Inserting courses " doc:id="4bdc0ed3-f85f-4edf-bb5f-cef8f14200cd" config-ref="Database_Config">
+				<db:sql ><![CDATA[Insert into coursesalotment (coursename, courseid,price , userid )  
+values (:coursename , :courseid ,:price ,:userid) ]]></db:sql>
+				<db:input-parameters ><![CDATA[#[{
+	coursename : payload.coursename,
+	courseid : payload.courseid,
+	price : payload.price,
+	userid : payload.userid
+}]]]></db:input-parameters>
+			</db:insert>
+		</foreach>
+		<ee:transform doc:name="finalPayload" doc:id="4ff89c0f-65a8-4448-8813-29f9825924df" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	
+</flow>
+	<flow name="deleteNCourses" doc:id="eecd3b75-4a19-4646-b6b1-284560fb41eb" >
+		<ee:transform doc:name="metaData" doc:id="7fd9046c-3aff-4f4d-9a5e-4d5896b2670c" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="id" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.userid]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:delete doc:name="DeleteCourse" doc:id="82ceb1fb-d90b-40ed-8061-4deca1fc23f7" config-ref="Database_Config">
+			<db:sql ><![CDATA[delete from coursesalotment where userid = :userid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	userid : vars.id
+}]]]></db:input-parameters>
+		</db:delete>
+	</flow>
+	<flow name="wishlistToCart" doc:id="9ed0b2d6-5136-4d25-80c1-21f338cd063f" >
+		<ee:transform doc:name="metaData" doc:id="86bd6807-8019-4f36-82ae-05393f6210db" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="courseid" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.courseid]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:select doc:name="fetching wishlist data" doc:id="e2700082-e868-43c4-bb37-452ae2996733" targetValue="#[payload reduce ((item,acc = {}) -&gt; item)]" target="wishlistData" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from wishlist where courseid = :courseid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"courseid" : vars.courseid
+}]]]></db:input-parameters>
+		</db:select>
+		<db:insert doc:name="inserting new usercart data" doc:id="a8ab0cfb-2c3a-4337-a53c-b334e0ac7ae3" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into usercart
+   values (:courseid,:userid,:coursename, :price, :ratings,:review)    ]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	coursename : vars.wishlistData.coursename,
+	price : vars.wishlistData.price,
+	courseid : vars.wishlistData.courseid,
+	review : vars.wishlistData.review,
+	ratings : vars.wishlistData.ratings,
+	userid  : vars.wishlistData.userid
+}]]]></db:input-parameters>
+		</db:insert>
+		<ee:transform doc:name="finalPayload" doc:id="01819f68-9ad6-454e-87c5-783ed419ff5d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="sortByPrice-Flow" doc:id="4ece2230-6883-4471-87d7-9d22561d7368">
+		<db:select doc:name="fetching course data" doc:id="ab7a3ec8-267c-49e9-b0ee-cf1ceb4c822d" config-ref="Database_Config">
+			<db:sql><![CDATA[select * from courses;]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="course payload" doc:id="f4a75a59-d7db-477b-a1e7-f8b33e8cb548">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="d92955d6-eb5c-41ee-bd6c-ce0dd526e54b">
+			<when expression='#[payload.low ~= "low-high" as String]'>
+				<db:select doc:name="course price orderby" doc:id="f6cfc007-8e31-474e-acee-b1efb1b51106" config-ref="Database_Config">
+					<db:sql><![CDATA[Select * from courses order by price]]></db:sql>
+				</db:select>
+				<ee:transform doc:name="coursePrice payload" doc:id="7072d56f-6bcc-46a7-a0a0-6c18b31a8728">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"Low to high" : payload
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<db:select doc:name="fetching coursePrice desc" doc:id="ba308ef6-072a-4ab8-9ce8-4bfdbaa5dd7d" config-ref="Database_Config">
+					<db:sql><![CDATA[Select * from courses order by price desc]]></db:sql>
+				</db:select>
+				<ee:transform doc:name="coursePrice payload" doc:id="ad125d9a-676b-4295-9cd4-38632ab249f1">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"High to low" : payload
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
+	</flow>
+	<flow name="addReviewflow" doc:id="7fce78dd-ea21-4d48-b797-6903d589b621" >
+		<ee:transform doc:name="metaData" doc:id="41531591-5e5d-4196-8fa8-4aeaa69fb7f3">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="qp" ><![CDATA[%dw 2.0
+output application/json
+---	
+{
+	courseid : attributes.queryParams.courseid,
+	review:  attributes.queryParams.review,
+	ratings: attributes.queryParams.ratings
+	}
+]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:select doc:name="fetching course data" doc:id="cc10a761-aa37-4bb3-96c2-e70d5bde0eed" config-ref="Database_Config">
+			<db:sql ><![CDATA[Select * from courses where courseid = :courseid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	courseid : vars.courseId.courseid
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="course payload" doc:id="71c47870-fc7a-45f1-ad40-3246c5ede37e" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="idData" ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:update doc:name="Updating course details" doc:id="3752f5df-b0a7-4416-b9ec-956fbcfdfd4f" config-ref="Database_Config">
+			<db:sql ><![CDATA[ update courses set review = :review , ratings= :ratings where courseid = :courseid;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	review: vars.qp.review,
+	courseid: vars.qp.courseid,
+	ratings : vars.qp.ratings
+}]]]></db:input-parameters>
+		</db:update>
+		<ee:transform doc:name="finalpayload" doc:id="f7636526-0fe1-47b2-a548-2775888703eb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="orderflow" doc:id="99747d74-126b-46de-82a1-a1174c6a5c56" >
+		<ee:transform doc:name="metaData" doc:id="e804ffa6-817b-4118-8c2b-d1338f4465ec" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="ordId" ><![CDATA[%dw 2.0
+output application/java
+---
+
+"orderid" : attributes.queryParams.orderid 
+
+]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<db:select doc:name="fetching usercart data" doc:id="b2322551-1536-4df4-815d-19ffcd54926a" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from usercart where courseid = :courseid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+ "courseid" : attributes.queryParams.courseid
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="usercart payload" doc:id="02e1250f-229b-48ec-8d53-1858c235fc99" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload reduce ((item, acc = {}) -> item)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:insert doc:name="Inserting new order from usercart" doc:id="09ef5f4d-bf6f-4be9-9872-0819325be666" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into orders (courseid,coursename,price,review,ratings,userid)
+ values (:courseid ,:coursename ,:price,:review ,:ratings,:userid)]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+  courseid : payload.courseid,
+  coursename :payload.coursename,
+  price : payload.price,
+  review : payload.review,
+  ratings : payload.ratings,
+  userid : payload.userid
+}]]]></db:input-parameters>
+		</db:insert>
+		<db:select doc:name="fetching order data" doc:id="5b93c867-1bd9-4b2d-942d-54c3531f5dd8" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from orders where orderid = :orderid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+"orderid" : vars.ordId.orderid
+
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="finalPayload" doc:id="d93e937a-ef5f-4c4a-a418-22761d20fe63" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="batchjobEmail" doc:id="00210fdc-95e0-47f1-b2e0-a8ea562c10bb" >
+		<db:select doc:name="fetching wishlist data" doc:id="10ff7072-2085-43c9-9b28-b00f5bdf9d48" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from wishlist where userid =:userid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	userid : attributes.queryParams.userid
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="payload of wishlist" doc:id="7f94c5b4-ecc5-4fb3-8587-0592a88d7141" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<batch:job jobName="course-sapi-implBatch_Job" doc:id="53dd30b1-d401-45e4-8ab8-875127fab0b6" maxFailedRecords="-1">
+			<batch:process-records >
+				<batch:step name="Batch_Step" doc:id="ece8e1ed-974e-4708-91aa-8086ba9bc425" acceptPolicy="ALL">
+					<ee:transform doc:name="payload" doc:id="f6b20e63-aed7-4043-95e7-f4ba73996051" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<email:send doc:name="sending email" doc:id="c3b74d3f-93a8-43a2-8d7f-79389bb57c2a" config-ref="Email_SMTP" fromAddress="palavelliusharani1114@gmail.com" subject="Regarding Order">
+			<email:to-addresses>
+				<email:to-address value="usharani.palavelli@gmail.com" />
+			</email:to-addresses>
+			<email:body encoding="UTF-8">
+				<email:content><![CDATA[#["order something"]]]></email:content>
+			</email:body>
+		</email:send>
+				</batch:step>
+			</batch:process-records>
+			<batch:on-complete >
+				<logger level="INFO" doc:name="logger" doc:id="8b30b880-3965-4106-a803-63881a51a059" message='#["mail sent successfully"]'/>
+			</batch:on-complete>
+		</batch:job>
+		<ee:transform doc:name="finalPayload" doc:id="39a3cb3d-9efb-4a80-b730-091dec929ee8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="courseperformance" doc:id="11f85aa2-415e-453f-a895-7fb3c5f002c7" >
+		<db:select doc:name="fetching course details" doc:id="307197d8-5723-4628-b0a4-7cc4f4b31da6" config-ref="Database_Config">
+			<db:sql ><![CDATA[Select * from courses]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="filtering by performance" doc:id="186a21c6-46ff-41b1-a39e-b5f239e6ad93" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"performance":(payload filter $.averageratings>4 and $.sold >40 
+and $.completed >= 30) orderBy $.averageratings]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	
+</flow>
+
+</mule>
+	

@@ -1,0 +1,16 @@
+%dw 2.0
+
+type auto_906e597f_a8d4_4b8b_81e7_23ff2bddce3d_Input_Payload = {|
+  firstname: String, 
+  areaofinterest: String, 
+  role: String, 
+  mobilenumber: String, 
+  domain: String, 
+  about: String, 
+  usertype: String, 
+  profilepicture: String, 
+  experience: Number, 
+  userId: Number, 
+  lastname: String
+|}
+

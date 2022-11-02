@@ -1,0 +1,157 @@
+#%RAML 1.0
+title: user
+traits:
+  error_responce: !include trait.raml
+/user:
+  is: [error_responce]
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example/success/user.json
+  post:
+    responses:
+      201:
+        body:
+          application/json:
+            example: !include example/success/user.json
+  put:
+    responses:
+      201:
+        body:
+          application/json:
+            example: !include example/success/user.json          
+/course:
+  is: [error_responce]
+  get:
+    queryParameters:
+      courseid:
+        type: number
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example/success/course.json
+  post:
+    responses:
+      201:
+        body:
+          application/json:
+           example: !include example/success/course.json
+  delete:
+    queryParameters:
+      courseid:
+        type: number
+        required: false
+    responses:
+      201:
+        body:
+          application/json:
+            example: !include example/success/course.json
+/courseN:
+  is: [error_responce]
+  get:  
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example/success/course.json
+  delete:
+    queryParameters:
+      courseid:
+        type: number
+        required: false
+    responses:
+      201:
+        body:
+         application/json:
+          example: !include example/success/course.json  
+/usercart:
+  is: [error_responce]  
+  get:
+    queryParameters:
+      courseid:
+        type: number
+        required: false
+      userid:
+        type: number
+        required: false 
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example/success/course.json  
+  delete:
+    queryParameters:
+      courseid:
+        type: number
+        required: true
+    responses:
+      201:
+        body:
+          application/json:
+            example: !include example/success/course.json 
+/usercartprice:
+  is: [error_responce]
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example/success/course.json 
+/userwishlist:
+  is: [error_responce]
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example/success/course.json 
+/coursesortprice:
+  is: [error_responce]
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example/success/course.json
+/coursereview:
+  is: [error_responce]
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example/success/course.json                           
+/order:
+  is: [error_responce]
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: {
+              "message" : "200ok"
+            }   
+/email:
+  is: [error_responce] 
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example/success/course.json
+/coursePerformance:
+  is: [error_responce] 
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include example/success/course.json
+
+                
+  
+              

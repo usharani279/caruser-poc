@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="user-test-suite.xml" />
+	<munit:test name="user-test-suite-get:\user:user-configTest" doc:id="b2e6da1b-9abc-42a5-b029-7300df9b5baa" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="376efba3-9bc6-4623-a9e1-4b71c6c3860f" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="85753b6d-2fa7-4e30-8640-deab914c0bbd" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="fetching User Data" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\user:user-config" doc:id="0feea441-4149-4a88-921e-2e0dc947e75a" name="get:\user:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="251c46a4-8d4e-4b5b-b1e0-b067cb246da1" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-post:\user:user-configTest" doc:id="98339f38-3bb9-471e-8328-98245f15f9ba" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="1e3eec7b-1f95-4125-82b9-434c7e6347c9" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="insertingNewUser record" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="32023a14-56c9-4880-a93f-b7ed3033065e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="8a5fb151-cb3e-413b-96ff-c8cd30e4df8d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://user.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\user:user-config" doc:id="51a95f14-febc-409f-9213-3c021d3de6e2" name="post:\user:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="d2c10543-6903-41a1-b719-5a70344b512c" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-put:\user:user-configTest" doc:id="1d40e750-a563-432b-952d-d18f6c725ca5" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="ffe600f6-767a-4231-bac3-c372635d4153" processor="db:update">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="UpdatingData" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a3513045-aee3-472a-9dfd-b172ba4ffa0b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="9aeff6de-cc82-4796-90c7-d38559525ad4" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://user.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to put:\user:user-config" doc:id="265d0497-f55a-47a6-831d-6ab2f42de394" name="put:\user:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="03ecc6c6-48aa-47e6-b4b4-5a088d1f9f08" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-post:\course:user-configTest" doc:id="8cc054f8-4ed3-40d8-ba61-63b4899ff5fd" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="446b1fd6-1155-4fdd-bdcd-57d443972d5e" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Inserting NewCourse data" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="3e943359-006f-440b-b659-abef0ae0824a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="5fd6e80e-362b-4821-acbf-bb001487344f" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://course.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\course:user-config" doc:id="eb634b5d-aec6-4b42-b129-b817560093c3" name="post:\course:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="2cc3a5d1-cd46-4f07-8fe3-bc1241d595a6" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-delete:\course:user-configTest" doc:id="77e07ca7-f203-41aa-ad83-a3f205e6d4f1" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="64ca873c-0ba6-410b-8864-35c111869736" processor="db:delete">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d09c8710-19e0-412e-bd1a-151323e85ea7" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="f5763ae2-1d40-4c3f-8912-30e7a3a955fb" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://course.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to delete:\course:user-config" doc:id="3c8ebd6a-487d-463d-abdf-59183877b413" name="delete:\course:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="ddf41745-7513-4a86-ab83-7af980c2d20d" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\course:user-configTest" doc:id="2c76adec-edbb-4c05-85aa-cfbf5e7fb7ab" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="370d0faa-aac7-4ece-b9a8-b0abc364fe1b" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="16b3d46b-317d-4a30-a7cc-fde7f81faa30" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\course:user-config" doc:id="df24c45b-d1b6-430b-990d-d04eac550ee0" name="get:\course:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="097f0ee5-da30-4fa2-9499-e8f66b84a349" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\usercart:user-configTest" doc:id="7db4fd82-5928-4655-a012-e428fcb13d11" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="b72a9816-7143-4837-a1f2-2d3292ec4f20" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b93779a1-3d85-495b-b37e-16ab9f56eab4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="9c718976-9d0e-429b-95fd-f7830a7c7ef3" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="3c2367f5-a0ca-4de7-9e73-9f99d842a58c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="ba1310ce-4646-405d-9495-dc0cb19da42b" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c317bfc4-1d88-4b2b-bc71-8c1828829ce3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="62e64598-364d-446b-8c22-02ae403f3ffb" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://usercart.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\usercart:user-config" doc:id="a78909fb-e055-48ac-9888-c82bd23def56" name="get:\usercart:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="d7ea83d4-23bb-46ba-bd98-2816543ada26" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\usercartprice:user-configTest" doc:id="c75e9a26-2f1c-46bf-93e9-d87c786ea541" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="8a2f76f3-8ba7-4ace-bcf9-631c0118a4e1" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d7796a9a-f89d-492a-a4af-b8d0c44e0479" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="9778c2d4-291e-4cc0-9d52-fd1b4607c6e7" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://usercart.json','application/json')]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\usercartprice:user-config" doc:id="781175b1-aa55-4d38-8b2d-84c571061a63" name="get:\usercartprice:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="886059a0-7763-4c70-a779-060e13579840" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-delete:\usercart:user-configTest" doc:id="29b0b81a-5546-4f51-af42-766e7b5130b7" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="a592b1d0-c1d2-4f19-b593-089fdcb2c1d8" processor="db:delete">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b8119d87-c5b2-4963-b769-ecb2df33cf48" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to delete:\usercart:user-config" doc:id="d2468a0b-954a-43ee-8dfc-47c9236fd499" name="delete:\usercart:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="0de2eb59-44e9-4de6-bc2c-20f631377e37" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\courseN:user-configTest" doc:id="121349a4-6c39-4a2e-a851-b5320921781f" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="802e3147-4ae8-4339-b471-1ef6f63b215e" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b17bf420-4295-4158-8eae-17883374bce7" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="bb06b448-b1c4-405e-8264-943dd66fcc8b" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://course.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\courseN:user-config" doc:id="ffbf233c-3ab7-4349-b58c-295426e1989f" name="get:\courseN:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="faaaefbc-8f26-49f6-8453-6de082115b00" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-delete:\courseN:user-configTest" doc:id="541168d5-a68b-41d6-9563-ff2cd0e4ec32" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="6dcb62ac-9620-4076-9120-1d780cd7bcd6" processor="db:delete">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="82ceb1fb-d90b-40ed-8061-4deca1fc23f7" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to delete:\courseN:user-config" doc:id="ba832e60-0c25-48c0-8cf3-7bf74cde320c" name="delete:\courseN:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="52c1f22e-0010-40f7-98fb-17340567727a" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\userwishlist:user-configTest" doc:id="45c9cc8b-8e1e-45c8-a712-5f52e6856641" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="c6dac386-e224-473c-a42b-77cb5b74c8f7" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e2700082-e868-43c4-bb37-452ae2996733" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f4b02fda-e783-4fac-bc85-0aa5683dc3b0" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a8ab0cfb-2c3a-4337-a53c-b334e0ac7ae3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="b508a682-b9a7-4fbf-bb94-9b681ac4312a" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://wishlist.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\userwishlist:user-config" doc:id="3e4b2166-58d2-40c1-b037-b5cf97abfdf2" name="get:\userwishlist:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="b796ce01-84a6-4cf0-ac69-e6ffa5549e4d" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\coursesortprice:user-configTest" doc:id="33dd9c79-14c0-4140-82a3-1dc1e3765d19" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="4c7a0287-2bd2-40ae-8280-1bbf16275e0b" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ab7a3ec8-267c-49e9-b0ee-cf1ceb4c822d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="393a1260-8529-4697-aa35-ed52e3b117c8" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f6cfc007-8e31-474e-acee-b1efb1b51106" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="abc41846-800b-4c97-9646-74276ff55e36" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://course.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\coursesortprice:user-config" doc:id="19964e1b-f0c6-4ef1-8fe6-909b1d273295" name="get:\coursesortprice:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c02e57ce-2451-4236-922f-78d61d9ef14e" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\coursereview:user-configTest" doc:id="83f76421-d40b-472b-bc03-ed4baff6ca53" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="3462cb00-6b99-451f-8ef3-05be915966ab" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="cc10a761-aa37-4bb3-96c2-e70d5bde0eed" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="df6b629b-6a12-425f-b9bc-75eb8c0109b9" processor="db:update">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="3752f5df-b0a7-4416-b9ec-956fbcfdfd4f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="435240d0-efe4-4460-bcc8-9395a470a9f0" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://course.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\coursereview:user-config" doc:id="4d67c838-151b-4d57-bc67-839f3fc853cd" name="get:\coursereview:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c394f3f7-6e5b-4eae-8358-968ef0b2d8b1" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\order:user-configTest" doc:id="d28f5942-f900-4545-9aa0-a0ba038894ac" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="ae0a786a-f036-4c77-a311-da1585f8f28d" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b2322551-1536-4df4-815d-19ffcd54926a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="57ecee0f-a1f5-4a39-8ebc-55715de2d6c4" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="09ef5f4d-bf6f-4be9-9872-0819325be666" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="0b6f7e14-3cc3-40ba-a37b-8a47f49509eb" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="5b93c867-1bd9-4b2d-942d-54c3531f5dd8" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="d685102c-b3ac-4f3b-a714-55e6466e4919" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://order.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\order:user-config" doc:id="0ffd80eb-7e97-443f-8962-b04a07d54086" name="get:\order:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="451e672f-1cfc-4ba1-903f-d3277e3a6de1" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\email:user-configTest" doc:id="783db52e-d1f9-49d1-a652-0514cc748fdb" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="74bcb8a9-f9f8-4bb9-aa78-c84078c9ac87" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="10ff7072-2085-43c9-9b28-b00f5bdf9d48" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="9caacbde-b359-48e2-92ed-09b0b6fc543e" processor="email:send">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c3b74d3f-93a8-43a2-8d7f-79389bb57c2a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="9f794fd9-5019-4d78-abe6-6e37f1fb5c92" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://wishlist.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\email:user-config" doc:id="e6867ed4-e30c-4dcc-9349-3325f66ed80f" name="get:\email:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="3de2e4c4-96ba-4d0c-98e2-96b33b4e4f9c" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\coursePerformance:user-configTest" doc:id="6c349af2-e0bc-4b08-b713-f878392a7bc5" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="3953c8c1-7589-4dbc-b32a-8bc21fb72de1" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="307197d8-5723-4628-b0a4-7cc4f4b31da6" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="d7dd89ef-ef82-415d-8aab-296d5998c5e1" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://course.json','application/json')]" mediaType="application/json" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\coursePerformance:user-config" doc:id="b639756f-776d-46b9-bdea-cda641ead966" name="get:\coursePerformance:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="26c6349b-d1de-4046-a6d4-8cbe263e8042" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\user:user-configTestAPIKIT:BAD_REQUEST" doc:id="563d4835-275f-4dc0-bff5-17fb9e4d9f92" description="Test" expectedErrorType="APIKIT:BAD_REQUEST">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="0d9a5ec9-90ab-4596-af98-7be7843bd881" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="85753b6d-2fa7-4e30-8640-deab914c0bbd" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="fetching User Data" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:BAD_REQUEST" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\user:user-config" doc:id="84eb0fe1-9bbf-42b1-ad38-b4b2b28c42fa" name="get:\user:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="3f3458f6-1a20-4143-a2da-4f4fd0192e71" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\user:user-configTestAPIKIT:NOT_FOUND" doc:id="81b1f741-32cc-4810-a30d-2c6f9ceecd46" description="Test" expectedErrorType="APIKIT:NOT_FOUND">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="4954b09c-2bbf-422c-82b3-755d0d8590c2" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="85753b6d-2fa7-4e30-8640-deab914c0bbd" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="fetching User Data" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\user:user-config" doc:id="c750f06f-53e1-46bd-8fca-8d0372706e1f" name="get:\user:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="cc68bb48-8fa0-4cf4-b61e-904395e0d35c" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\user:user-configTestAPIKIT:METHOD_NOT_ALLOWED" doc:id="50c35c69-6fc5-4b1e-93aa-a8c1bcc91381" description="Test" expectedErrorType="APIKIT:METHOD_NOT_ALLOWED">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="d857ca1b-24f6-49fd-91ad-fb25f263c9c5" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="85753b6d-2fa7-4e30-8640-deab914c0bbd" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="fetching User Data" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:METHOD_NOT_ALLOWED" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\user:user-config" doc:id="7ddaa48b-c8bf-45e5-9fdd-cff97876d3e5" name="get:\user:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="028974cf-3b1a-4dc4-95e9-aecc673cced8" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\user:user-configTestAPIKIT:NOT_ACCEPTABLE" doc:id="a5856acc-0049-4842-b272-f0e5eebe35f3" description="Test" expectedErrorType="APIKIT:NOT_ACCEPTABLE">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f27010d0-063f-4359-9252-12cdb50a9ff4" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="85753b6d-2fa7-4e30-8640-deab914c0bbd" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="fetching User Data" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\user:user-config" doc:id="2ba99ab0-0a81-4195-ad5e-00b94820b345" name="get:\user:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="df518991-78fe-4c23-b52a-0c8ef26e9cbd" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\user:user-configTestAPIKIT:UNSUPPORTED_MEDIA_TYPE" doc:id="1a4d53a0-3f77-4ade-93ae-b2959d904569" description="Test" expectedErrorType="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="905e11b7-bfd6-44a0-8258-a501b7f712d9" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="85753b6d-2fa7-4e30-8640-deab914c0bbd" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="fetching User Data" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:UNSUPPORTED_MEDIA_TYPE" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\user:user-config" doc:id="980b4d8a-b178-4f6d-beb7-31790c17c58c" name="get:\user:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="4e9f7e32-64fa-447a-b649-c26c487c2726" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="user-test-suite-get:\user:user-configTestAPIKIT:NOT_IMPLEMENTED" doc:id="e6f525c8-bade-4c15-bd03-74d18b37cadf" description="Test" expectedErrorType="APIKIT:NOT_IMPLEMENTED">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="92231270-bc3e-4c1a-9ffa-2db9fa848020" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="85753b6d-2fa7-4e30-8640-deab914c0bbd" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="fetching User Data" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_IMPLEMENTED" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\user:user-config" doc:id="2663c14f-e324-4b68-8e79-6a225153fbe6" name="get:\user:user-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c24016a4-6a7e-472d-9653-2307dea01e6d" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

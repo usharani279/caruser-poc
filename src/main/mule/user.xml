@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+    <apikit:config name="user-config" api="user.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <flow name="user-main">
+        <http:listener path="${http.path}" config-ref="user-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="user-config" />
+    </flow>
+    <flow name="user-console">
+        <http:listener path="/console/*" config-ref="user-httpListenerConfig">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="user-config" />
+    </flow>
+    <flow name="put:\user:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="7f5b9f9c-8eec-4a7a-bf80-50ee67637e31" name="updateUserDetails" />
+    </flow>
+    <flow name="delete:\course:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="9f7b57e6-b519-46a3-9835-2f1f85f6dc17" name="deleteCourse" />
+    </flow>
+    <flow name="delete:\courseN:user-config">
+		<flow-ref doc:name="Flow Reference" doc:id="d4db37fb-3195-4c9c-9e90-ceb699362c16" name="deleteNCourses"/>
+    </flow>
+    <flow name="delete:\usercart:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="8e12ccac-05d0-4845-b340-3f256c460b20" name="deleteCoursefromUsercart" />
+    </flow>
+    <flow name="get:\course:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="d9b4e75f-c128-490c-873c-c35d6ba4919f" name="fetchCourseDetails" />
+    </flow>
+    <flow name="get:\courseN:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="73c48339-84b4-48ba-82ee-d7fa47443711" name="addNCourses" />
+    </flow>
+    <flow name="get:\coursePerformance:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="04610d87-e495-492c-a4d6-753294911058" name="courseperformance" />
+    </flow>
+    <flow name="get:\coursereview:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="32a0673e-c9ac-4451-8c7e-8083d678a444" name="addReviewflow" />
+    </flow>
+    <flow name="get:\coursesortprice:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="f26077da-5980-4c68-bc33-58631d7439b7" name="sortByPrice-Flow" />
+    </flow>
+    <flow name="get:\email:user-config">
+		<flow-ref doc:name="Flow Reference" doc:id="bd20b312-fcb6-413b-a810-b4c9a06ac6f6" name="batchjobEmail"/>
+    </flow>
+    <flow name="get:\order:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="767c6e14-0c77-46de-bfca-d4a95159d578" name="orderflow" />
+    </flow>
+    <flow name="get:\user:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="f4fa8fa6-afca-4685-af79-e712ce641cb2" name="fetchUserdetials" />
+    </flow>
+    <flow name="get:\usercart:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="85aff543-f7fa-473e-b891-c74c422c9fa0" name="usercartflow" />
+    </flow>
+    <flow name="get:\usercartprice:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="6f6aacee-481b-4b54-a6c7-a6b82c66f124" name="fetchUsercartprice" />
+    </flow>
+    <flow name="get:\userwishlist:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="9bcfc872-417f-4040-80f4-d3119a50b099" name="wishlistToCart" />
+    </flow>
+    <flow name="post:\course:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="8782228b-eea0-4546-b985-9623b729e761" name="insertCoursedetails" />
+    </flow>
+    <flow name="post:\user:user-config">
+        <flow-ref doc:name="Flow Reference" doc:id="234320d3-bc41-4cdf-a5ef-a2ab53393e6b" name="insertuserDetails" />
+    </flow>
+</mule>

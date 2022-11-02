@@ -1,0 +1,14 @@
+%dw 2.0
+
+type auto_21197d92_2a98_4e43_b64f_41ef6db79245_Output_Variables_course = {|  |} | {|
+  courseid: Number, 
+  coursename?: String, 
+  price?: String, 
+  review?: String, 
+  ratings?: String, 
+  username?: String, 
+  sold?: String, 
+  completed?: String, 
+  averageratings?: String
+|}
+

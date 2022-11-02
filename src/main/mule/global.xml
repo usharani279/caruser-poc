@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<http:listener-config name="user-httpListenerConfig" doc:name="HTTP Listener config" doc:id="3612b306-69e6-4249-bbbc-fe69d12cc06b" >
+		<http:listener-connection host="${http.host}" port="${http.port}" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="8cf6bee4-c460-46f9-9093-a359e2181d67" >
+		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.username}" password="${db.password}" database="${db.database}" />
+	</db:config>
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="ee8e5d3b-745a-47d4-be5f-0f49cb6511de" >
+		<email:smtp-connection host="${mail.host}" port="${mail.port}" user="${mail.username}" password="${mail.password}" timeoutUnit="MINUTES">
+			<email:properties >
+				<email:property key="mail.smtp.starttls.enable" value="true" />
+			</email:properties>
+		</email:smtp-connection>
+	</email:smtp-config>
+	<configuration doc:name="Configuration" doc:id="389118b6-245d-4dcf-826b-a246451129a9" defaultErrorHandler-ref="errorError_Handler" />
+	<configuration-properties doc:name="Configuration properties" doc:id="586a2f90-4ab6-4978-b28a-61bf43dba6f8" file="dev.properties" />
+</mule>

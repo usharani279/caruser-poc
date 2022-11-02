@@ -1,0 +1,18 @@
+[
+{
+      "courseid": 1,
+      "userid": 1,
+      "coursename": "mulesoft",
+      "price": 5000,
+      "ratings": "5 star",
+      "review": "good"
+    },
+    {
+      "courseid": 2,
+      "userid": 2,
+      "coursename": "java",
+      "price": 4000,
+      "ratings": "5 star",
+      "review": "good"
+    }
+]
